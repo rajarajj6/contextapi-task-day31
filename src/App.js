@@ -1,25 +1,37 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { Component, useState } from 'react';
+import { BrowserRouter } from "react-router-dom";
+import Components from './components';
+import { Provider } from "./context";
 
 function App() {
+  const [list, setlist] = useState([])
+
+  const adddetails = (data) => {
+    setlist([...list, data])
+  }
+
+  const deletedata = (data) => {
+    const position = list.findIndex(item => item.id == data.id)
+    const newarray = [...list]
+    newarray.splice(position, 1)
+    setlist(newarray)
+  }
+
+  const savedData = (data) => {
+    const position = list.findIndex(item => item.id == data.id)
+    const newarray = [...list]
+    newarray[position] = data
+    setlist(newarray)
+  }
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <BrowserRouter>
+        <Provider value={{ list, adddetails, deletedata, savedData }}>
+          <Components />
+        </Provider>
+      </BrowserRouter>
     </div>
-  );
+  )
 }
 
 export default App;
